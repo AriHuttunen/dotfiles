@@ -1,12 +1,25 @@
+{{ if eq .chezmoi.arch "amd64" }}
+
+# Intel
+set -gx BREW_PREFIX /usr/local/bin/
+eval "$(/usr/local/bin/brew shellenv)"
+
+{{ else }}
+
+# Apple silicon
+set -gx BREW_PREFIX /opt/homebrew
+eval "$(/opt/homebrew/brew shellenv)"
+
+{{ end }}
+
 if status is-interactive
     # Commands to run in interactive sessions can go here
     alias cm='chezmoi'
 end
 
-eval "$(/usr/local/bin/brew shellenv)"
-set -x VISUAL /usr/local/bin/hx
-set -x EDITOR /usr/local/bin/hx
-set -x PATH ~/.juliaup/bin $PATH
+set -gx VISUAL hx
+set -gx EDITOR hx
+set -gx PATH ~/.juliaup/bin $PATH
 set -gx PATH ~/.cargo/bin $PATH
 set -gx PATH "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" $PATH
 
